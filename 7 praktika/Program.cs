@@ -35,11 +35,11 @@ namespace ConsoleApp3
                         CalculateBalance();
                         break;
 
-                    case "4": // не пишет
+                    case "4": 
                         GetAverageExpense();
                         break;
 
-                    case "5": // Общая сумма расходов: 25000 руб.  Самая затратная категория: Продукты(Продукты руб.) Самая частая категория: Продукты(Продукты операций)
+                    case "5":
                         PrintStatistics();
                         break;
 
@@ -106,16 +106,18 @@ namespace ConsoleApp3
                     for (int i = 0; i < entry.Value.Count; i++)
                         sum += entry.Value[i];
                     double average = sum / entry.Value.Count;
-                    Console.WriteLine($"{entry.Key}: {average * 4} (на 4 недели(примерно))\r\n");
+                    Console.WriteLine($"{entry.Key}: {average} (примерно)\r\n");
                 }
             }
         }
         public static void PrintStatistics()
         {
+            Console.WriteLine("\nСтатистика расходов:");
+
             double totalExpenses = 0;
-            string mostExpensive = "";
+            string mostExpensiveCategory = "";
             double maxExpenseAmount = 0;
-            string mostFrequent = "";
+            string mostFrequentCategory = "";
             int maxFrequency = 0;
 
             foreach (var entry in traty)
@@ -124,26 +126,25 @@ namespace ConsoleApp3
                 {
                     double categoryTotal = 0;
                     for (int i = 0; i < entry.Value.Count; i++)
-                    {
                         categoryTotal += entry.Value[i];
-                    }
                     totalExpenses += categoryTotal;
                     if (categoryTotal > maxExpenseAmount)
                     {
                         maxExpenseAmount = categoryTotal;
-                        mostExpensive = entry.Key;
+                        mostExpensiveCategory = entry.Key;
                     }
                     if (entry.Value.Count > maxFrequency)
                     {
                         maxFrequency = entry.Value.Count;
-                        mostFrequent = entry.Key;
+                        mostFrequentCategory = entry.Key;
                     }
+                    double percentage = (categoryTotal / totalExpenses) * 100;
+                    Console.WriteLine($"{entry.Key}: {categoryTotal} ({percentage:F2}%)");
                 }
             }
-
-            Console.WriteLine($"Общая сумма расходов: {totalExpenses} руб.");
-            Console.WriteLine($"Самая затратная категория: {mostExpensive} ({mostExpensive} руб.)");
-            Console.WriteLine($"Самая частая категория: {mostFrequent} ({mostFrequent} операций)\r\n");
+            Console.WriteLine($"\nОбщая сумма расходов: {totalExpenses}");
+            Console.WriteLine($"Самая затратная категория: {mostExpensiveCategory}");
+            Console.WriteLine($"Самая популярная категория: {mostFrequentCategory}");
         }
     }
 }
